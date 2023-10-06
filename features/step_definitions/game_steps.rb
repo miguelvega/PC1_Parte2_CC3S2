@@ -13,6 +13,7 @@ When /^I start a new game with word "(.*)"$/ do |word|
   click_button "New Game"
 end
 
+
 When /^I guess "(.*)"(?: again)?$/ do |letter|
   letter.downcase!
   fill_in("guess", :with => letter)
@@ -74,3 +75,5 @@ end
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   filtered_page(selector).click_button(button)
 end
+
+

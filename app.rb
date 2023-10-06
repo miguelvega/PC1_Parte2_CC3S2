@@ -41,19 +41,27 @@ class WordGuesserApp < Sinatra::Base
   # Extrae la letra enviada en el formulario
   letter = params[:guess].to_s[0]
 
-  # Utiliza esa letra para adivinar el juego actual
-  result = @game.guess(letter)
+  begin
+    # Utiliza esa letra para adivinar el juego actual
+    result = @game.guess(letter)
 
-  # Verifica si la conjetura fue repetida o inválida y configura un mensaje de flash en consecuencia
-  if result == :repeated
-    flash[:message] = "You have already used that letter."
-  elsif result == :invalid
+    # Verifica si la conjetura fue repetida y configura un mensaje de flash en consecuencia
+    if result == :repeated
+      flash[:message] = "You have already used that letter."
+    elsif result == :correct
+      flash[:message] = "Correct guess!"
+    end
+
+  rescue ArgumentError
+    # Maneja la excepción si la conjetura es inválida y configura un mensaje de flash apropiado
     flash[:message] = "Invalid guess."
   end
 
   # Redirige a la acción show para que el jugador pueda ver el resultado de su adivinación
   redirect '/show'
   end
+
+
   
   # Everytime a guess is made, we should eventually end up at this route.
   # Use existing methods in WordGuesserGame to check if player has

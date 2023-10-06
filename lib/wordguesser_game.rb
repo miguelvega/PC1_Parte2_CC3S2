@@ -7,27 +7,27 @@ class WordGuesserGame
 
 attr_reader :word, :guesses, :wrong_guesses
 
-  def initialize(word) #Constructor
+  def initialize(word = '')
     @word = word.downcase
     @guesses = ''
     @wrong_guesses = ''
   end
   
-  def guess(letter) # letter representa la letra que se está adivinando.
+  def guess(letter)
     raise ArgumentError, 'Invalid guess' unless letter =~ /^[a-zA-Z]$/
     letter.downcase!
-    
+
+    return :repeated if @guesses.include?(letter) || @wrong_guesses.include?(letter)
+
     if @word.include?(letter)
-      return false if @guesses.include?(letter)
       @guesses << letter
-    else 
-      return false if @wrong_guesses.include?(letter)
+      return :correct
+    else
       @wrong_guesses << letter
+      return false
     end
-    
-    true
-     
-  end 
+  end
+ 
   
   def word_with_guesses
     result = ''
